@@ -80,7 +80,7 @@
 - Click **ADD URI**
 - Agrega la URL de callback de Supabase:
   ```
-  https://d6d9081b-a518-48ba-b110-3027ea5cfcac.supabase.co/auth/v1/callback
+  https://TU-PROYECTO-ID.supabase.co/auth/v1/callback
   ```
 
 4. Click **CREATE**
@@ -222,7 +222,7 @@ Supabase soporta muchos providers OAuth:
 ### Error: "redirect_uri_mismatch"
 - Verifica que la redirect URI en Google Cloud Console sea exactamente:
   ```
-  https://d6d9081b-a518-48ba-b110-3027ea5cfcac.supabase.co/auth/v1/callback
+  https://TU-PROYECTO-ID.supabase.co/auth/v1/callback
   ```
 - No debe tener espacios ni caracteres extra
 

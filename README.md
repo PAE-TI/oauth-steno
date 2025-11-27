@@ -118,15 +118,15 @@ npm install
 
 ### 4. Configurar Variables de Entorno
 
-Edita `.env.local` con tus credenciales reales:
+Crea un archivo `.env.local` en la raíz del proyecto con tus credenciales:
 
 ```bash
-# Supabase (YA CONFIGURADO)
-NEXT_PUBLIC_SUPABASE_URL=https://d6d9081b-a518-48ba-b110-3027ea5cfcac.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGc...
-SUPABASE_SERVICE_ROLE_KEY=hypmTWS4UVRYQkPV4n3-qzbg2dNzLB9T0qaACsWOa_0
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=tu-url-de-supabase
+NEXT_PUBLIC_SUPABASE_ANON_KEY=tu-anon-key
+SUPABASE_SERVICE_ROLE_KEY=tu-service-role-key
 
-# Stripe (REEMPLAZA CON TUS KEYS)
+# Stripe
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_TU_KEY_AQUI
 STRIPE_SECRET_KEY=sk_test_TU_KEY_AQUI
 STRIPE_WEBHOOK_SECRET=whsec_TU_SECRET_AQUI
@@ -135,6 +135,8 @@ NEXT_PUBLIC_STRIPE_PRICE_ID=price_TU_PRICE_ID_AQUI
 # App
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
+
+**⚠️ IMPORTANTE:** Nunca subas el archivo `.env.local` a tu repositorio. Asegúrate de que esté en `.gitignore`.
 
 ### 5. Ejecutar en Desarrollo
 
@@ -185,7 +187,7 @@ Después del deploy, actualiza:
 **En Google Cloud Console:**
 - Credentials → OAuth 2.0 Client → Authorized redirect URIs:
   ```
-  https://d6d9081b-a518-48ba-b110-3027ea5cfcac.supabase.co/auth/v1/callback
+  https://TU-PROYECTO-ID.supabase.co/auth/v1/callback
   ```
 
 **En Vercel:**

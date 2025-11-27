@@ -15,7 +15,7 @@
 
 ### 1. Crear la Tabla en Supabase (IMPORTANTE)
 
-1. Ve a tu proyecto en Supabase: https://supabase.com/dashboard/project/d6d9081b-a518-48ba-b110-3027ea5cfcac
+1. Ve a tu proyecto en Supabase: https://supabase.com/dashboard/project/TU-PROYECTO-ID
 2. Ve a **SQL Editor** (en el menú lateral)
 3. Abre el archivo `supabase/schema.sql` de este proyecto
 4. Copia TODO el contenido
@@ -31,7 +31,7 @@ Sigue la guía completa en: `GOOGLE_OAUTH_SETUP.md`
 1. Crea proyecto en Google Cloud Console
 2. Configura OAuth Consent Screen
 3. Crea OAuth Client ID (Web application)
-4. Redirect URI: `https://d6d9081b-a518-48ba-b110-3027ea5cfcac.supabase.co/auth/v1/callback`
+4. Redirect URI: `https://TU-PROYECTO-ID.supabase.co/auth/v1/callback`
 5. Copia Client ID y Secret
 6. Pégalos en Supabase → Authentication → Providers → Google
 
@@ -103,7 +103,7 @@ Abre http://localhost:3000
 ### "Error: redirect_uri_mismatch" al hacer login
 - **Solución**: La redirect URI en Google Cloud Console debe ser exactamente:
   ```
-  https://d6d9081b-a518-48ba-b110-3027ea5cfcac.supabase.co/auth/v1/callback
+  https://TU-PROYECTO-ID.supabase.co/auth/v1/callback
   ```
 
 ### "Error: Invalid client" en Stripe

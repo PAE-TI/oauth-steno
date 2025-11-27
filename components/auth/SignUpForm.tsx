@@ -79,16 +79,10 @@ export default function SignUpForm() {
   }
 
   return (
-    <form onSubmit={handleSignUp} className="space-y-4 w-full max-w-md">
+    <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md">
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
           {error}
-        </div>
-      )}
-      
-      {message && (
-        <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded">
-          {message}
         </div>
       )}
 
@@ -98,9 +92,10 @@ export default function SignUpForm() {
         </label>
         <input
           id="firstName"
+          name="firstName"
           type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          value={formData.firstName}
+          onChange={handleChange}
           required
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           placeholder="Juan"
@@ -113,9 +108,10 @@ export default function SignUpForm() {
         </label>
         <input
           id="lastName"
+          name="lastName"
           type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          value={formData.lastName}
+          onChange={handleChange}
           required
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           placeholder="Pérez"
@@ -128,9 +124,10 @@ export default function SignUpForm() {
         </label>
         <input
           id="email"
+          name="email"
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={formData.email}
+          onChange={handleChange}
           required
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           placeholder="tu@email.com"
@@ -143,9 +140,10 @@ export default function SignUpForm() {
         </label>
         <input
           id="password"
+          name="password"
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={formData.password}
+          onChange={handleChange}
           required
           minLength={6}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -159,9 +157,10 @@ export default function SignUpForm() {
         </label>
         <input
           id="confirmPassword"
+          name="confirmPassword"
           type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          value={formData.confirmPassword}
+          onChange={handleChange}
           required
           minLength={6}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
