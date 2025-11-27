@@ -1,28 +1,25 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
-import { NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const { userId, firstName, lastName, email } = await request.json()
-    
-    const supabase = createRouteHandlerClient({ cookies })
-    
-    const ip = request.headers.get('x-forwarded-for') || 
-               request.headers.get('x-real-ip') || 
+
+    const ip = request.headers.get('x-forwarded-for') ||
+               request.headers.get('x-real-ip') ||
                'unknown'
-    
-    const registrationIp = ip.split(',')[0].trim()
+
+    const supabase = await createClient()
 
     const { error } = await supabase
       .from('user_profiles')
       .insert({
-        id: userId,
+        user_id: userId,
         first_name: firstName,
         last_name: lastName,
         email: email,
-        registration_ip: registrationIp,
-        last_login_ip: registrationIp,
+        registration_ip: ip,
+        last_login_ip: ip,
       })
 
     if (error) {
@@ -35,7 +32,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error in register API:', error)
+    console.error('Error in register route:', error)
     return NextResponse.json(
       { error: 'Error interno del servidor' },
       { status: 500 }

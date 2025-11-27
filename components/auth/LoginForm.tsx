@@ -1,17 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 
 export default function LoginForm() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  
-  const router = useRouter()
-  const supabase = createClientComponentClient()
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  })
+
+  const supabase = createClient()
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    })
+  }
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -20,26 +29,20 @@ export default function LoginForm() {
 
     try {
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+        email: formData.email,
+        password: formData.password,
       })
 
       if (signInError) throw signInError
 
       if (data.user) {
-        const response = await fetch('/api/auth/login', {
+        await fetch('/api/auth/login', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             userId: data.user.id,
           }),
         })
-
-        if (!response.ok) {
-          console.error('Error al actualizar IP de login')
-        }
 
         router.push('/dashboard')
         router.refresh()

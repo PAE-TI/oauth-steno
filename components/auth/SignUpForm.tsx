@@ -1,78 +1,75 @@
 'use client'
 
 import { useState } from 'react'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 
 export default function SignUpForm() {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [message, setMessage] = useState<string | null>(null)
-  
-  const router = useRouter()
-  const supabase = createClientComponentClient()
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  })
 
-  const handleSignUp = async (e: React.FormEvent) => {
+  const supabase = createClient()
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    })
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
-    setMessage(null)
     setLoading(true)
 
-    if (password !== confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       setError('Las contraseñas no coinciden')
       setLoading(false)
       return
     }
 
-    if (password.length < 6) {
+    if (formData.password.length < 6) {
       setError('La contraseña debe tener al menos 6 caracteres')
       setLoading(false)
       return
     }
 
     try {
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
         options: {
           emailRedirectTo: `${window.location.origin}/auth/callback`,
           data: {
-            first_name: firstName,
-            last_name: lastName,
-          }
-        }
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+          },
+        },
       })
 
-      if (authError) throw authError
+      if (signUpError) throw signUpError
 
-      if (authData.user) {
-        const response = await fetch('/api/auth/register', {
+      if (data.user) {
+        await fetch('/api/auth/register', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            userId: authData.user.id,
-            firstName,
-            lastName,
-            email,
+            userId: data.user.id,
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            email: formData.email,
           }),
         })
 
-        if (!response.ok) {
-          throw new Error('Error al guardar el perfil del usuario')
-        }
-
-        setMessage('¡Registro exitoso! Por favor revisa tu email para verificar tu cuenta.')
-        
-        setTimeout(() => {
-          router.push('/login')
-        }, 3000)
+        router.push('/verify-email')
       }
     } catch (err: any) {
       setError(err.message || 'Error al registrarse')
