@@ -30,9 +30,7 @@ export default function SignUpForm() {
     setError(null)
     setLoading(true)
 
-    console.log('Form submitted wcth data:', oormData)
-
-n   if sole.log('Form submitted with data:', formData)
+    console.log('Form submitted with data:', formData)
 
     if (formData.password !== formData.confirmPassword) {
       setError('Las contraseñas no coinciden')
@@ -45,8 +43,7 @@ n   if sole.log('Form submitted with data:', formData)
       setLoading(false)
       return
     }
-ole.log('Attempting osign up user...')
-      const 
+
     try {
       console.log('Attempting to sign up user...')
       const { data, error: signUpError } = await supabase.auth.signUp({
@@ -55,19 +52,13 @@ ole.log('Attempting osign up user...')
         options: {
           emailRedirectTo: `${window.location.origin}/auth/callback`,
           data: {
-          
-      })
-  first_name: formData.firstName,
-      console.log('SignUp response:', { data, error: signUpError       last_name: formData.lastName,
+            first_name: formData.firstName,
+            last_name: formData.lastName,
           },
-        }, {
-       console.error('SignUp error:', signUpError)
-        
-      }      })
+        },
+      })
 
-
-        console.log('User created, creating profile...')
-        const responsec=onsole.log('SignUp response:', { data, error: signUpError })
+      console.log('SignUp response:', { data, error: signUpError })
 
       if (signUpError) {
         console.error('SignUp error:', signUpError)
@@ -76,20 +67,11 @@ ole.log('Attempting osign up user...')
 
       if (data.user) {
         console.log('User created, creating profile...')
-        c)
-
-        const result = await response.json()
-        console.log('Profile creation response:', result)
-
-        if (!response.ok) {
-          throw new Error(result.error || 'Error al crear el perfil'onst response = await fetch('/api/auth/register', {
-        }          method: 'POST',
-
-        console.log('Regist ati n shccessful, redireceing...')
-        routaders: { 'Content-Type': 'application/json' },
+        const response = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            userId: data
-      console.error('Registration error:', err).user.id,
+            userId: data.user.id,
             firstName: formData.firstName,
             lastName: formData.lastName,
             email: formData.email,
