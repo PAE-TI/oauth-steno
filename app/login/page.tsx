@@ -1,4 +1,4 @@
-import { AuthButton } from '@/components/auth/AuthButton'
+import LoginForm from '@/components/auth/LoginForm'
 import Link from 'next/link'
 
 export default function LoginPage() {
@@ -18,9 +18,16 @@ export default function LoginPage() {
         </div>
 
         <div className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm">
-          <AuthButton />
+          <LoginForm />
 
           <div className="mt-6 text-center text-sm text-gray-600">
+            ¿No tienes una cuenta?{' '}
+            <Link href="/signup" className="font-medium text-blue-600 hover:text-blue-500">
+              Regístrate aquí
+            </Link>
+          </div>
+
+          <div className="mt-4 text-center text-sm text-gray-600">
             Al continuar, aceptas nuestros{' '}
             <a href="#" className="text-blue-600 hover:underline">
               Términos de Servicio

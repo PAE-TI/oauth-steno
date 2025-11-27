@@ -1,6 +1,6 @@
 # OAuth Steno - Sistema de Autenticación y Suscripciones
 
-Sistema completo de autenticación OAuth2 con Supabase y suscripciones con Stripe.
+Sistema completo de autenticación OAuth2 con Supabase (Google OAuth + Email/Password) y suscripciones con Stripe.
 
 ## 🚀 Stack Tecnológico (100% Gratuito)
 
@@ -10,6 +10,25 @@ Sistema completo de autenticación OAuth2 con Supabase y suscripciones con Strip
 - **Stripe** - Procesamiento de pagos (sin costo fijo)
 - **Tailwind CSS** - Estilos
 - **Vercel** - Hosting (Free tier)
+
+## ✨ Características
+
+- ✅ **Autenticación Dual**:
+  - Login con Google OAuth
+  - Login con Email y Contraseña
+  - Registro con verificación de email
+- ✅ **Gestión de Usuarios**:
+  - Perfiles con nombre, apellido y email
+  - Registro de IP (registro y último login)
+  - Verificación de email obligatoria
+- ✅ **Suscripciones con Stripe**:
+  - Checkout seguro
+  - Portal de cliente
+  - Webhooks para sincronización
+- ✅ **Seguridad**:
+  - Row Level Security (RLS) en Supabase
+  - Middleware de autenticación
+  - Rutas protegidas
 
 ## 📋 Prerequisitos
 
@@ -21,35 +40,41 @@ Sistema completo de autenticación OAuth2 con Supabase y suscripciones con Strip
 
 ### 1. Configurar Supabase
 
-#### A. Crear tabla de suscripciones
+#### A. Crear tablas en la base de datos
 
 1. Ve a tu proyecto en Supabase: https://supabase.com/dashboard
 2. Ve a **SQL Editor**
 3. Copia y pega el contenido de `supabase/schema.sql`
 4. Ejecuta el script (Run)
 
+Esto creará:
+- Tabla `user_profiles` (nombre, apellido, email, IPs)
+- Tabla `subscriptions` (datos de Stripe)
+- Políticas RLS para seguridad
+- Triggers automáticos
+
 #### B. Configurar Authentication
 
-1. Ve a **Authentication** → **Providers**
-2. Habilita **Google OAuth**:
-   - Ve a [Google Cloud Console](https://console.cloud.google.com)
-   - Crea un proyecto nuevo
-   - Habilita Google+ API
-   - Ve a **Credentials** → **Create Credentials** → **OAuth 2.0 Client ID**
-   - Application type: **Web application**
-   - Authorized redirect URIs:
-     ```
-     https://d6d9081b-a518-48ba-b110-3027ea5cfcac.supabase.co/auth/v1/callback
-     ```
-   - Copia **Client ID** y **Client Secret**
-   - Pégalos en Supabase → Authentication → Providers → Google
+##### Google OAuth
+1. Ve a **Authentication** → **Providers** → Habilita **Google**
+2. Sigue la guía completa en `GOOGLE_OAUTH_SETUP.md`
 
-3. Configura **Site URL** y **Redirect URLs**:
-   - Site URL: `http://localhost:3000` (dev) / `https://tu-dominio.vercel.app` (prod)
-   - Redirect URLs:
+##### Email/Password
+1. Ve a **Authentication** → **Providers** → Asegúrate de que **Email** esté habilitado
+2. Activa la verificación de email en **Authentication** → **Settings**
+3. Sigue la guía completa en `EMAIL_AUTH_SETUP.md`
+
+#### C. Configurar URLs de Redirección
+
+1. Ve a **Authentication** → **URL Configuration**
+2. Configura:
+   - **Site URL**: `http://localhost:3000` (dev) / `https://tu-dominio.vercel.app` (prod)
+   - **Redirect URLs**:
      ```
      http://localhost:3000/auth/callback
+     http://localhost:3000/**
      https://tu-dominio.vercel.app/auth/callback
+     https://tu-dominio.vercel.app/**
      ```
 
 ### 2. Configurar Stripe
@@ -171,13 +196,34 @@ Después del deploy, actualiza:
 
 ## 🧪 Probar el Flujo Completo
 
-### 1. Probar Autenticación
+### 1. Probar Registro con Email/Password
+
+1. Ve a `/signup`
+2. Completa el formulario:
+   - Nombre
+   - Apellido
+   - Email
+   - Contraseña (mínimo 6 caracteres)
+3. Click en "Registrarse"
+4. Revisa tu email y haz clic en el enlace de verificación
+5. Serás redirigido a `/auth/callback` y luego al dashboard
+
+### 2. Probar Login con Email/Password
 
 1. Ve a `/login`
-2. Click en "Continue with Google"
+2. Ingresa tu email y contraseña
+3. Click en "Iniciar Sesión"
+4. Deberías ser redirigido a `/dashboard`
+
+### 3. Probar Login con Google OAuth
+
+1. Ve a `/login`
+2. Click en "Google"
 3. Autoriza con tu cuenta de Google
 4. Deberías ser redirigido a `/dashboard`
 5. Como no tienes suscripción, serás redirigido a `/pricing`
+
+### 4. Probar Suscripción
 
 ### 2. Probar Suscripción
 
